@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aide • Munch Admin</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:16px;line-height:1.5}
+  h1{font-size:18px;margin:0 0 8px}
+  h2{font-size:14px;margin:16px 0 6px}
+  .card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin:10px 0;background:#fff}
+  .muted{color:#6b7280}
+  code{background:#f3f4f6;border-radius:4px;padding:1px 4px}
+  ul{margin:6px 0 0 18px}
+</style>
+</head>
+<body>
+  <h1>❓ Aide & mode d’emploi</h1>
+  <p class="muted">Centre d’aide pour les actions du menu <strong>Munch • Admin</strong>.</p>
+
+  <div class="card">
+    <h2>📐 Initialiser les feuilles — <code>initSheets()</code></h2>
+    <ul>
+      <li>Crée <em>Participants_validés</em>, <em>Paiements</em>, <em>Prix_planches</em> si absents.</li>
+      <li>Pose les en‑têtes attendus, valeurs par défaut, formats.</li>
+      <li>À faire après un reset ou première mise en place.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>📤 Consolider & envoyer — <code>envoyerConfirmationsConsolide()</code></h2>
+    <ul>
+      <li>Lit <em>Réponses</em> (validées), consolide dans <em>Participants_validés</em>.</li>
+      <li>Pose/repère les formules <strong>Montant</strong> &amp; <strong>Total payé</strong>.</li>
+      <li>Envoie les emails de confirmation (bouton PayPal si <code>Montant &gt; 0</code>).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🔎 Audit des formules — <code>auditFormulasParticipants()</code></h2>
+    <ul>
+      <li>Inspecte toutes les lignes de <em>Participants_validés</em>.</li>
+      <li>Ne modifie rien, affiche un bilan.</li>
+    </ul>
+    <h2>🛠️ Réparer les formules — <code>fixFormulasParticipants()</code></h2>
+    <ul>
+      <li>Repose les formules <strong>Montant</strong> &amp; <strong>Total payé</strong> manquantes/altérées.</li>
+      <li>Remet le format <code>0.00</code>.</li>
+    </ul>
+    <h2>💣 Réécrire (forcé) — <code>forceRewriteFormulasParticipants()</code></h2>
+    <ul>
+      <li>Réécrit les formules sur toutes les lignes, même si présentes.</li>
+      <li>Utiliser après import CSV/collage massif.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🧹 Purges</h2>
+    <ul>
+      <li><strong>Purger Participants_validés</strong> — <code>purgeParticipantsValides()</code> : vide les données de la feuille (conserve en‑têtes), relance l’init.</li>
+      <li><strong>Purger Participants_validés + Paiements</strong> — <code>purgeParticipantsEtPaiements()</code> : idem sur 2 feuilles.</li>
+      <li><strong>Purge complète</strong> — <code>purgeComplet()</code> : Participants_validés + Paiements + Réponses (⚠️ irréversible).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>ℹ️ Notes</h2>
+    <ul>
+      <li><strong>Total payé</strong> est une formule (SUMIF) basée sur la feuille <em>Paiements</em>.</li>
+      <li>La WebApp PayPal met à jour <em>Paiements</em> et le <em>Statut Paiement</em>, jamais la cellule “Total payé”.</li>
+      <li>Après modification d’en‑têtes/structure, exécuter <em>Init</em> puis <em>Réparer les formules</em>.</li>
+    </ul>
+  </div>
+</body>
+</html>
