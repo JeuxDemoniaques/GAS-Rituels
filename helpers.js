@@ -1,6 +1,7 @@
 function getCredentials() {
   const props = PropertiesService.getScriptProperties();
   return {
+    brandName: props.getProperty("BRAND_NAME") || "Brand name",
     clientId: props.getProperty("PAYPAL_CLIENT_ID"),
     clientSecret: props.getProperty("PAYPAL_CLIENT_SECRET"),
     wrapperUrl: props.getProperty("WRAPPER_URL"),

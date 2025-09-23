@@ -92,7 +92,7 @@ function handleCreate(e) {
       custom_id: email
     }],
     application_context: {
-      brand_name: "Les Jeux Démoniaques",
+      brand_name: creds.brandName,
       user_action: "PAY_NOW",
       return_url: WRAPPER_URL + "?paypal=return&email=" + encodeURIComponent(email),
       cancel_url: WRAPPER_URL + "?paypal=cancel&email=" + encodeURIComponent(email)

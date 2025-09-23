@@ -254,7 +254,7 @@ function sendMail() {
         emailContent,
         {
           from: (aliases && aliases.length ? aliases[0] : Session.getActiveUser().getEmail()),
-          name: "Les Jeux Démoniaques",
+          name: creds.brandName,
           htmlBody: emailContent
         }
       );
