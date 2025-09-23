@@ -232,7 +232,7 @@ function sendMail() {
       // const qCharc   = normalizeAmount(consolFinal[i][idxConsCharcuterie] || 0);
       // const qMixte   = normalizeAmount(consolFinal[i][idxConsMixte]       || 0);
 
-      const t = HtmlService.createTemplateFromFile("email");
+      const t = HtmlService.createTemplateFromFile("mails/confirmation");
       t.data = {
         pseudo: pseudo,
         nbPeople : nbrPeople,
