@@ -259,6 +259,7 @@ function sendMail() {
         }
       );
       shConsolide.getRange(i + 1, idxConsStatutMail + 1).setValue(new Date());
+      LOG.info("Mail envoyé à", pseudo);
     }
     LOG.info("Envoi des mail terminés.");
   } finally {
