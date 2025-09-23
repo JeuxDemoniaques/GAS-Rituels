@@ -250,7 +250,7 @@ function sendMail() {
 
       GmailApp.sendEmail(
         email,
-        "Confirmation d'inscription à la Nuit Démoniaque",
+        "Confirmation d'inscription pour " + creds.eventName,
         emailContent,
         {
           from: (aliases && aliases.length ? aliases[0] : Session.getActiveUser().getEmail()),
