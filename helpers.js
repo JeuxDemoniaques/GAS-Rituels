@@ -4,7 +4,8 @@ function getCredentials() {
     clientId: props.getProperty("PAYPAL_CLIENT_ID"),
     clientSecret: props.getProperty("PAYPAL_CLIENT_SECRET"),
     wrapperUrl: props.getProperty("WRAPPER_URL"),
-    webappUrl: props.getProperty("WEBAPP_URL")
+    webappUrl: props.getProperty("WEBAPP_URL"),
+    paiementOpen: props.getProperty("PAIEMENT_OPEN")
   };
 }
 

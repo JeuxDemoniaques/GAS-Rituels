@@ -38,6 +38,10 @@ function doGet(e) {
  * crée l'order PayPal et renvoie approveUrl.
  */
 function handleCreate(e) {
+  const paiementOpen = String(creds.paiementOpen) === "true";
+    if (!paiementOpen) {
+      return jsonOut({ error: "001" });
+    }
   const email = e.parameter.email;
   if (!email) return jsonOut({ error: "Email manquant" });
   if (!WRAPPER_URL) {
