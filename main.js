@@ -270,3 +270,89 @@ function sendMail() {
     mailLock.releaseLock();
   }
 }
+
+function sendMailRappel() {
+  const mailRappelLock = LockService.getScriptLock();
+  if (!mailRappelLock.tryLock(30000)) { LOG.warn("Lock indisponible"); return; }
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const shConsolide = ss.getSheetByName("Participants_validés");
+
+    const consDataHead        = shConsolide.getDataRange().getValues()[0];
+    const idxConsEmail        = consDataHead.indexOf("Email");
+    const idxConsPseudo       = consDataHead.indexOf("Pseudo");
+    const idxConsParticipants = consDataHead.indexOf("Participants");
+    // const idxConsFromage      = consDataHead.indexOf("Fromage");
+    // const idxConsCharcuterie  = consDataHead.indexOf("Charcuterie");
+    // const idxConsMixte        = consDataHead.indexOf("Mixte");
+    const idxConsMontant      = consDataHead.indexOf("Montant");
+    const idxConsTotalPaye    = consDataHead.indexOf("Total payé");
+    const idxConsStatutMail   = consDataHead.indexOf("Statut Mail");
+
+// TODO Use this instead of comparing montant
+    const idxConsStatutPayt   = consDataHead.indexOf("Statut Paiement");
+
+    const consolFinal = shConsolide.getDataRange().getValues();
+    const aliases     = GmailApp.getAliases();
+
+    for (let i = 1; i < consolFinal.length; i++) {
+
+      // const statutMail = consolFinal[i][idxConsStatutMail];
+      
+      
+      ensureMontantFormula_(shConsolide, i + 1, idxConsMontant + 1);
+      ensureTotalPayeFormula_(shConsolide, i + 1, idxConsTotalPaye + 1);
+      ensureStatutPaiementFormula_(shConsolide, i + 1, idxConsStatutPayt + 1);
+      SpreadsheetApp.flush();
+      const email  = consolFinal[i][idxConsEmail];
+      const pseudo = consolFinal[i][idxConsPseudo];
+
+
+      const montant = normalizeAmount(shConsolide.getRange(i + 1, idxConsMontant + 1).getValue());
+      const totalPaye = normalizeAmount(shConsolide.getRange(i + 1, idxConsTotalPaye + 1).getValue());
+      const nbrPeople = shConsolide.getRange(i + 1, idxConsParticipants + 1).getValue();
+
+      // const prixUnit = getBoardPrices_();
+      // const qFromage = normalizeAmount(consolFinal[i][idxConsFromage]     || 0);
+      // const qCharc   = normalizeAmount(consolFinal[i][idxConsCharcuterie] || 0);
+      // const qMixte   = normalizeAmount(consolFinal[i][idxConsMixte]       || 0);
+
+      if (montant <= totalPaye) continue;
+debugger;
+      const t = HtmlService.createTemplateFromFile("mails/rappel");
+      t.data = {
+        pseudo: pseudo,
+        montant: montant,
+        totalPaye: totalPaye,
+        people: nbrPeople,
+        eventDateTexte: creds.eventDateText,
+        eventHoursTexte: creds.eventHoursText,
+        deadlineTexte: creds.paymentDeadlineTexte,
+        paymentLink: WRAPPER_URL + "?email=" + encodeURIComponent(email),
+        // qte: { Fromage: qFromage, Charcuterie: qCharc, Mixte: qMixte },
+        // prixFmt: {
+        //   Fromage: formatPrice_(prixUnit.Fromage),
+        //   Charcuterie: formatPrice_(prixUnit.Charcuterie),
+        //   Mixte: formatPrice_(prixUnit.Mixte)
+        // }
+      };
+      const emailContent = t.evaluate().getContent();
+
+      GmailApp.sendEmail(
+        email,
+        "Rappel – " + creds.eventName + " – Paiement en attente",
+        emailContent,
+        {
+          from: (aliases && aliases.length ? aliases[0] : Session.getActiveUser().getEmail()),
+          name: "Les Jeux Démoniaques",
+          htmlBody: emailContent
+        }
+      );
+      shConsolide.getRange(i + 1, idxConsStatutMail + 1).setValue(new Date());
+      LOG.info("Mail de rappel envoyé à", pseudo);
+    }
+    LOG.info("Envoi des mail de rappel terminés.");
+  } finally {
+    mailRappelLock.releaseLock();
+  }
+}

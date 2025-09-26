@@ -14,12 +14,27 @@ function confirmSendMail() {
   }
 }
 
+function confirmSendMailRappel() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.alert(
+    'Confirmation d\'envoi',
+    'Tu veux vraiment envoyer les mails de rappel ?',
+    ui.ButtonSet.YES_NO
+  );
+
+  if (response === ui.Button.YES) {
+    sendMailRappel();
+  }
+}
+
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
-  ui.createMenu('Nuit Démoniaques • Admin')
+  ui.createMenu('🛠️ Admin')
   .addItem('📤 Consolider les inscriptions', 'consolidation')
   .addSubMenu(ui.createMenu('📨 Emails')
     .addItem('📤 Envoyer les mails de confirmation', 'confirmSendMail')
+    .addItem('🔔 Envoyer les mails de rappel', 'confirmSendMailRappel')
+  )
   .addSeparator()
   .addItem('📐 Initialiser les feuilles', 'initSheets')
   // .addItem('🔍 Audit complet', 'auditComplet')
