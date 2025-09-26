@@ -238,6 +238,10 @@ function sendMail() {
         nbPeople : nbrPeople,
         montant: montant,
         totalPaye: totalPaye,
+        nbPeople: nbrPeople,
+        eventDateTexte: creds.eventDateText,
+        eventHoursTexte: creds.eventHoursText,
+        deadlineTexte: creds.paymentDeadlineTexte,
         paymentLink: WRAPPER_URL + "?email=" + encodeURIComponent(email),
         // qte: { Fromage: qFromage, Charcuterie: qCharc, Mixte: qMixte },
         // prixFmt: {

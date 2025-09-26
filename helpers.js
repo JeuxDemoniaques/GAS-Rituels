@@ -1,8 +1,11 @@
 function getCredentials() {
   const props = PropertiesService.getScriptProperties();
   return {
-    brandName: props.getProperty("BRAND_NAME") || "Brand name",
-    eventName: props.getProperty("EVENT_NAME") || "Event name",
+    eventName: props.getProperty("EVENT_NAME") || "EVENT_NAME",
+    eventDateText: props.getProperty("EVENT_DATE_TEXT") || "EVENT_DATE_TEXT",
+    eventHoursText: props.getProperty("EVENT_HOURS_TEXT") || "EVENT_HOURS_TEXT",
+    paymentDeadlineTexte: props.getProperty("PAYMENT_DEADLINE_TEXT") || "PAYMENT_DEADLINE_TEXT",
+    brandName: props.getProperty("PAYPAL_BRAND_NAME") || "PAYPAL_BRAND_NAME",
     clientId: props.getProperty("PAYPAL_CLIENT_ID"),
     clientSecret: props.getProperty("PAYPAL_CLIENT_SECRET"),
     wrapperUrl: props.getProperty("WRAPPER_URL"),
